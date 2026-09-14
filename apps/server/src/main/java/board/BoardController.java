@@ -25,4 +25,14 @@ public class BoardController {
         model.addAttribute("comments", dataStore.findCommentsByPostId(id));
         return "detail";
     }
+
+    @GetMapping("/posts/{id}/edit")
+    public String edit() {
+        return "form";
+    }
+
+    @GetMapping("/write")
+    public String write() {
+        return "form";
+    }
 }
