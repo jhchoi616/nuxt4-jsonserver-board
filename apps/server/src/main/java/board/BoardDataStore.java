@@ -1,7 +1,7 @@
 package board;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,7 @@ public class BoardDataStore {
 
     public BoardDataStore() {
         try (InputStream dbJson = getClass().getResourceAsStream("/db.json")) {
-            Db db = new ObjectMapper().readValue(dbJson, Db.class);
+            Db db = JsonMapper.builder().build().readValue(dbJson, Db.class);
             this.posts = db.posts();
             this.comments = db.comments();
         } catch (IOException e) {

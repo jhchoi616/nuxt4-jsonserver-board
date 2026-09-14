@@ -20,7 +20,6 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat-runtime'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.2'

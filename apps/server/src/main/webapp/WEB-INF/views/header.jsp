@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page pageEncoding="UTF-8" %>
     <header class="site-header">
       <div class="shell header-inner">
