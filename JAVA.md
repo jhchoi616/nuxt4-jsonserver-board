@@ -18,10 +18,13 @@
     ├── main/
     │   ├── java/board/
     │   │   ├── ServerApplication.java   # 진입점
-    │   │   ├── BoardController.java     # /, /posts/{id}, /posts/{id}/edit, /write
-    │   │   ├── BoardDataStore.java      # db.json을 메모리에 로드, id로 조회만 제공
-    │   │   ├── Post.java, Comment.java, Writer.java  # db.json에 대응하는 record
-    │   │   └── ServletInitializer.java
+    │   │   ├── ServletInitializer.java
+    │   │   ├── controller/
+    │   │   │   └── BoardController.java # /, /posts/{id}, /posts/{id}/edit, /write
+    │   │   ├── service/
+    │   │   │   └── BoardDataStore.java  # db.json을 메모리에 로드, id로 조회만 제공
+    │   │   └── domain/
+    │   │       └── Post.java, Comment.java, Writer.java  # db.json에 대응하는 record
     │   ├── resources/
     │   │   ├── db.json                  # 초기 게시글·댓글 데이터
     │   │   ├── application.properties
@@ -31,7 +34,7 @@
     │       ├── list.jsp                 # 목록 (정적)
     │       ├── detail.jsp               # 상세 (db.json 기반)
     │       └── form.jsp                 # 작성·수정 (정적)
-    └── test/java/board/BoardDataStoreTest.java
+    └── test/java/board/service/BoardDataStoreTest.java
 ```
 
 REST API 계층은 없습니다 — 컨트롤러가 `BoardDataStore`를 직접 호출해 JSP 모델에 데이터를 채웁니다.

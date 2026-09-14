@@ -1,5 +1,7 @@
-package board;
+package board.service;
 
+import board.domain.Comment;
+import board.domain.Post;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

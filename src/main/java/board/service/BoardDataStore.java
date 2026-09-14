@@ -1,5 +1,7 @@
-package board;
+package board.service;
 
+import board.domain.Comment;
+import board.domain.Post;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.json.JsonMapper;
 

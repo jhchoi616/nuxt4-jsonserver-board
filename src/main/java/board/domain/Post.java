@@ -1,4 +1,4 @@
-package board;
+package board.domain;
 
 public record Post(
     long id,
