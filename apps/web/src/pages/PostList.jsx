@@ -1,4 +1,26 @@
-export default function PostList() {
+import { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom";
+import { fetchList } from "../js/fetch";
+
+export default function PostList(props) {
+  const [params,setParams] = useSearchParams({page:0});
+  const [boards, setBoards] = useState();
+  const [loading, setLoading] = useState(false);
+  console.log(params.get("page"));
+  useEffect(()=>{
+    const loadData = async () => {
+      try{
+        const res = await fetchList(params.get("page"));
+        setBoards(res);
+        console.log("결과는?")
+        console.log(res);
+      }finally{
+        setLoading(true);
+      }
+    };
+    loadData();
+  },[])
+  console.log(boards);
   return (
     <>
       <section className="page-intro" aria-labelledby="board-title">

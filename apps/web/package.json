@@ -12,7 +12,8 @@
     "primeicons": "^7.0.0",
     "primereact": "^10.9.8",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.18.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.1",

@@ -1,34 +1,59 @@
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
-
-export default function PostDetail() {
+import { useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import { fetchComment, fetchPost } from '../js/fetch'
+export default function PostDetail(props) {
+  let {id} = useParams();
+  const [post, setPost] = useState("");
+  const [comments , setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  useEffect(()=>{
+   
+    setLoading(false);
+   const loadData = async ()=>{
+    try{
+      const board = await fetchPost(id);
+      setPost(board);
+      console.log(board);
+      const comments = await fetchComment(id);
+      setComment(comments);
+    }finally{
+      setLoading(true);
+    }
+    };
+  loadData();  
+  },[]);
   return (
     <>
+    <Link to={"/"}>
       <span className="back-link is-static">
         <i className="pi pi-chevron-left" aria-hidden="true" />
         전체 글로
       </span>
+    </Link>
+      {loading && post && (
 
-      <article className="card article-card">
-        <h1 className="page-title article-title">게시판 미션 진행 중 막히는 부분 공유합니다</h1>
+        <article className="card article-card">
+        <h1 className="page-title article-title">{post.title}</h1>
 
         <div className="post-head">
           <div className="author">
-            <span className="author-face" aria-hidden="true">작</span>
+            <span className="author-face" aria-hidden="true">{post.writer?.firstName}</span>
             <div>
-              <div className="author-name">작성자1</div>
-              <div className="author-date">2026년 8월 10일 09:02</div>
+              <div className="author-name">{post.writer?.nickName}</div>
+              <div className="author-date">{post.createdAt}</div>
             </div>
           </div>
           <div className="stat-row">
             <span aria-label="조회 297회">
               <i className="pi pi-eye" aria-hidden="true" />
-              297
+              {post.viewCount}
             </span>
             <span aria-label="댓글 2개">
               <i className="pi pi-comment" aria-hidden="true" />
-              2
+              {comments?.length}
             </span>
           </div>
         </div>
@@ -36,15 +61,7 @@ export default function PostDetail() {
         <hr className="rule" />
 
         <div className="post-body">
-          목록 조회는 됐는데 페이지네이션에서 전체 건수를 어디서 받아야 하는지 헷갈렸습니다.
-          {'\n'}
-          정리한 내용을 공유합니다.
-          {'\n\n'}
-          1. 목록은 페이지당 10개씩 보여줍니다.
-          {'\n'}
-          2. 상세로 들어가면 제목, 작성자, 작성일, 본문이 보입니다.
-          {'\n'}
-          3. 작성 / 수정 / 삭제는 같은 폼을 재사용합니다.
+          {post.content}
         </div>
 
         <div className="post-actions">
@@ -55,36 +72,31 @@ export default function PostDetail() {
           </span>
         </div>
       </article>
+      )}
 
       <section className="card comments-card">
         <div className="section-heading">
           <div>
-            <h2 className="section-title">댓글 2개</h2>
+            <h2 className="section-title">댓글 {comments?.length}개</h2>
             <p>답변이나 참고 자료를 나누면 더 빨리 해결할 수 있어요.</p>
           </div>
         </div>
 
-        <ul className="comment-list">
-          <li className="comment">
-            <span className="comment-face" aria-hidden="true">작</span>
+          <ul className="comment-list">
+        
+        {loading && comments && comments.map(el=>{
+          return <li className="comment">
+            <span className="comment-face" aria-hidden="true">{el.writer.firstName}</span>
             <div>
               <div className="author-name">
-                작성자2
-                <span className="author-date comment-when">8월 10일 10:12</span>
+                {el.writer.nickName}
+                <span className="author-date comment-when">{el.createdAt}</span>
               </div>
-              <p className="comment-text">저도 같은 부분에서 막혔는데 덕분에 해결했습니다. 감사합니다!</p>
+              <p className="comment-text">{el.content}</p>
             </div>
           </li>
-          <li className="comment">
-            <span className="comment-face" aria-hidden="true">작</span>
-            <div>
-              <div className="author-name">
-                작성자5
-                <span className="author-date comment-when">8월 10일 11:40</span>
-              </div>
-              <p className="comment-text">페이지네이션은 쿼리 파라미터로 넘기면 편해요.</p>
-            </div>
-          </li>
+        })}
+         
         </ul>
 
         <form className="comment-form field">
@@ -93,7 +105,7 @@ export default function PostDetail() {
             id="comment"
             rows={3}
             placeholder="해결 방법이나 참고 자료를 알려주세요"
-          />
+            />
           <div className="row-end">
             <Button type="button" label="댓글 등록" disabled />
           </div>
@@ -102,7 +114,7 @@ export default function PostDetail() {
 
       {/* 퍼블리싱된 삭제 확인 UI. visible 상태와 이벤트는 인턴이 구현한다. */}
       <Dialog
-        visible={false}
+      visible={false}
         header="이 글을 삭제할까요?"
         draggable={false}
         footer={(
@@ -111,8 +123,8 @@ export default function PostDetail() {
             <Button type="button" label="삭제" severity="danger" />
           </>
         )}
-      >
-        댓글 2개도 함께 사라지고, 되돌릴 수 없어요.
+        >
+        댓글 {comments?.length}개도 함께 사라지고, 되돌릴 수 없어요.
       </Dialog>
     </>
   )
