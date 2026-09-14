@@ -30,7 +30,8 @@
     │   │   ├── application.properties
     │   │   └── static/                  # styles.css, favicon.svg
     │   └── webapp/WEB-INF/views/
-    │       ├── _head.jsp, _foot.jsp, header.jsp  # 공통 레이아웃
+    │       ├── fragments/
+    │       │   └── _head.jsp, _foot.jsp, header.jsp  # 공통 레이아웃
     │       ├── list.jsp                 # 목록 (정적)
     │       ├── detail.jsp               # 상세 (db.json 기반)
     │       └── form.jsp                 # 작성·수정 (정적)

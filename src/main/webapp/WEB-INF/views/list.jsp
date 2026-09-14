@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ include file="_head.jsp" %>
+<%@ include file="fragments/_head.jsp" %>
 
       <section class="page-intro" aria-labelledby="board-title">
         <div>
@@ -265,4 +265,4 @@
         <span class="is-static" aria-label="다음 페이지"><i class="pi pi-chevron-right" aria-hidden="true"></i></span>
       </div>
 
-<%@ include file="_foot.jsp" %>
+<%@ include file="fragments/_foot.jsp" %>
