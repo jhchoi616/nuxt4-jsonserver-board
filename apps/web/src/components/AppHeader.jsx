@@ -1,7 +1,29 @@
 import { InputText } from 'primereact/inputtext'
-import { Link } from 'react-router-dom'
+import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom'
 
-export default function AppHeader() {
+export default function AppHeader(props) {
+  const [params,setParams] = useSearchParams();
+  const[search,setSearch]=useState("");
+console.log("넘겨받은 프로퍼티들 : ",props);
+// async function fetchSeqrch(){
+//   await fetchBoard();
+// }
+  function handleSearch(e){
+    setSearch(event.target.value);
+
+  }
+  function debounce(func, delay) {
+    let timer;
+    return function() {
+        const args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    }
+}
+
   return (
     <header className="site-header">
       <div className="shell header-inner">
@@ -19,7 +41,8 @@ export default function AppHeader() {
               type="search"
               placeholder="질문이나 해결 방법 검색"
               aria-label="게시글 검색"
-              readOnly
+              value={search}
+              onChange={handleSearch}
             />
           </div>
           <Link to={"/write"}>

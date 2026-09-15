@@ -1,26 +1,59 @@
 import { useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom";
-import { fetchList } from "../js/fetch";
+import { Link, useSearchParams } from "react-router-dom";
+import { fetchBoard, fetchNotice } from "../js/fetch";
+
 
 export default function PostList(props) {
-  const [params,setParams] = useSearchParams({page:0});
+  const [params,setParams] = useSearchParams({page:1,"sort":"createdAt"});
   const [boards, setBoards] = useState();
+  const [notices, setNotices] = useState();
   const [loading, setLoading] = useState(false);
   console.log(params.get("page"));
+  console.log("초기 파라미터 : ",params.get("sort"));
   useEffect(()=>{
     const loadData = async () => {
+      console.log("지금 유즈이펙 돌아유");
+      console.log(params.get("sort"));
       try{
-        const res = await fetchList(params.get("page"));
-        setBoards(res);
-        console.log("결과는?")
-        console.log(res);
+        let defaultPage = params.get("page")|| 1;
+        const res = await fetchNotice(defaultPage,params.get("q"),params.get("sort"));
+        setNotices(res);
+        const result = await fetchBoard(defaultPage,params.get("q"),params.get("sort"));
+        setBoards(result);
       }finally{
         setLoading(true);
       }
     };
     loadData();
-  },[])
+  },[params])
   console.log(boards);
+  console.log(notices);
+  console.log(loading);
+  console.log(boards?.PageCount > params.get("page"));
+  console.log( params.get("page") > 1 );
+  console.log(params.get("page"));
+  function prevPage(){
+    let page = params.get("page") || 1;
+    let sort = params.get("sort") || "createdAt";
+    let q = params.get("q") || "";
+    setParams({page:page-1,sort,q});
+  }
+  function nextPage(){
+    let page = params.get("page") || 1;
+    let sort = params.get("sort") || "createdAt";
+    let q = params.get("q") || "";
+    setParams({page:parseInt(page)+1,sort,q});
+  }
+  function handlePage(idx){
+    let sort = params.get("sort") || "createdAt";
+    let q = params.get("q") || "";
+    setParams({page:idx.idx+1,q,sort});
+  }
+  function handleSort(){
+    let page = params.get("page") || 1;
+    let q = params.get("q") || "";
+    setParams({page,q,sort:event.target.value});
+  }
   return (
     <>
       <section className="page-intro" aria-labelledby="board-title">
@@ -42,41 +75,48 @@ export default function PostList(props) {
             <p className="result-count">10개의 글</p>
             <label className="sort-control">
               <span className="sr-only">게시글 정렬</span>
-              <select defaultValue="최신순">
-                <option>최신순</option>
-                <option>조회순</option>
+              <select defaultValue="createdAt" onChange={()=>handleSort()}>
+                <option value={"createdAt"}>최신순</option>
+                <option value={"viewCount"}>조회순</option>
               </select>
               <i className="pi pi-chevron-down" aria-hidden="true" />
             </label>
           </div>
         </div>
 
-        <div className="card card--list">
+          <div className="card card--list">
           <ul className="post-list">
-            <li className="post-item is-notice">
+        {loading && notices?.length>0 && notices.map(el=>{
+
+return (
+  <li key={`notice_${el.id}`} className="post-item is-notice">
               <div className="post-item-body">
                 <div className="post-item-head">
                   <span className="pill-notice">공지</span>
-                  <h2 className="post-item-title"><span>공지사항 먼저 읽고 미션 시작해주세요</span></h2>
+            <Link to={`/posts/${el.id}`}>
+                  <h2 className="post-item-title"><span>{el.title}</span></h2>
+            </Link>
                 </div>
                 <div className="post-item-meta">
-                  <span className="post-author">운영자</span>
+                  <span className="post-author">{el.writer.nickName}</span>
                   <span className="sep" />
-                  <span>8월 12일</span>
+                  <span>{el.localDate}</span>
                   <span className="sep" />
-                  <span>조회 351</span>
+                  <span>조회 {el.viewCount}</span>
                 </div>
               </div>
               <div className="post-item-side">
                 <span className="reply-count">
                   <i className="pi pi-comment" aria-hidden="true" />
                   <span className="sr-only">댓글 </span>
-                  0
+                  {el.comments.length}
                 </span>
               </div>
             </li>
+            ) 
+        })}
 
-            <li className="post-item is-notice">
+            {/* <li className="post-item is-notice">
               <div className="post-item-body">
                 <div className="post-item-head">
                   <span className="pill-notice">공지</span>
@@ -97,31 +137,35 @@ export default function PostList(props) {
                   3
                 </span>
               </div>
-            </li>
+            </li> */}
+            {loading && boards.boards?.length>0 && boards.boards.map(el=>
 
-            <li className="post-item">
+            <li key={`board_${el.id}`} className="post-item">
               <div className="post-item-body">
                 <div className="post-item-head">
-                  <h2 className="post-item-title"><span>게시판 미션 진행 중 막히는 부분 공유합니다</span></h2>
+                  <Link to={`/posts/${el.id}`}>
+                  <h2 className="post-item-title"><span>{el.title}</span></h2>
+                  </Link>
                 </div>
                 <div className="post-item-meta">
-                  <span className="post-author">작성자1</span>
+                  <span className="post-author">{el.writer.nickName}</span>
                   <span className="sep" />
-                  <span>8월 10일</span>
+                  <span>{el.localDate}</span>
                   <span className="sep" />
-                  <span>조회 297</span>
+                  <span>조회 {el.viewCount}</span>
                 </div>
               </div>
               <div className="post-item-side">
                 <span className="reply-count has-replies">
                   <i className="pi pi-comment" aria-hidden="true" />
                   <span className="sr-only">댓글 </span>
-                  2
+                  {el.comments.length}
                 </span>
               </div>
             </li>
+            )}
 
-            <li className="post-item">
+            {/* <li className="post-item">
               <div className="post-item-body">
                 <div className="post-item-head">
                   <h2 className="post-item-title"><span>페이지네이션 쿼리는 어떻게 넘기시나요?</span></h2>
@@ -273,17 +317,19 @@ export default function PostList(props) {
                   1
                 </span>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
       </section>
 
       <div className="pager" aria-label="페이지 이동 UI">
-        <span className="is-disabled" aria-hidden="true"><i className="pi pi-chevron-left" /></span>
-        <span className="is-static" aria-current="page">1</span>
-        <span className="is-static">2</span>
-        <span className="is-static">3</span>
-        <span className="is-static" aria-label="다음 페이지"><i className="pi pi-chevron-right" aria-hidden="true" /></span>
+        <span className={loading && boards.pageCount >= params.get("page") && params.get("page") > 1 ? "is-static":"is-disabled"} onClick={prevPage} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
+        {loading && boards.pageCount>1 && Array.from({"length":boards.pageCount},(_,idx)=>{
+          if(params==idx)
+          return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})} aria-current="page">{idx+1}</span>)
+          else return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})} >{idx+1}</span>)
+        })}
+        <span className={boards?.pageCount>params.get("page")?"is-static":"is-disabled"} onClick={nextPage} aria-label="다음 페이지"><i className="pi pi-chevron-right" aria-hidden="true" /></span>
       </div>
     </>
   )

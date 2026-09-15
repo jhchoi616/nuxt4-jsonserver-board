@@ -10,11 +10,11 @@ import 'primeicons/primeicons.css'
 import './styles.css'
 
 createRoot(document.getElementById('app')).render(
-  <StrictMode>
+  // <StrictMode>
     <PrimeReactProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
     </PrimeReactProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )

@@ -12,7 +12,7 @@ export default function App() {
   const [searchParams,setSearchParams] = useSearchParams();
 
   useEffect(()=>{
-
+    console.log("???? 그러고보니 왜 얘 안 썼지 ? : ",searchParams);
   },[searchParams])
 
   return (
