@@ -1,0 +1,11 @@
+<%-- ArticleSkeleton (ContentState.jsx) 변환. 상세 조회 loading 상태에서 article-card 자리에 그대로 넣는다. --%>
+<div class="article-skeleton" aria-busy="true" aria-label="게시글을 불러오고 있어요">
+  <span class="skeleton-line skeleton-line--heading"></span>
+  <span class="skeleton-line skeleton-line--heading-short"></span>
+  <span class="skeleton-line skeleton-line--meta"></span>
+  <div class="skeleton-body">
+    <span class="skeleton-line"></span>
+    <span class="skeleton-line"></span>
+    <span class="skeleton-line skeleton-line--body-short"></span>
+  </div>
+</div>

@@ -85,7 +85,7 @@
         </aside>
       </div>
 
-      <%-- 퍼블리싱된 이탈 확인 UI. visible 상태와 이벤트는 인턴이 구현한다.
-           원본 React Dialog는 visible={false}로 항상 렌더링되지 않으므로 마크업을 옮기지 않는다. --%>
+      <!-- <%-- 퍼블리싱된 이탈 확인 UI. visible 상태와 이벤트는 인턴이 구현한다.
+           원본 React Dialog는 visible={false}로 항상 렌더링되지 않으므로 마크업을 옮기지 않는다. --%> -->
 
 <%@ include file="fragments/_foot.jsp" %>

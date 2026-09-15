@@ -1,0 +1,27 @@
+<%-- AppHeader.jsx 변환. 로고, 검색, 글쓰기 버튼의 마크업/스타일만 제공한다.
+     검색 입력 처리와 글쓰기 이동은 자바 개발자가 구현한다. --%>
+<header class="site-header">
+  <div class="shell header-inner">
+    <div class="logo">
+      <span class="logo-mark" aria-hidden="true">M</span>
+      <span class="logo-copy"><strong>개발 미션 게시판</strong></span>
+    </div>
+
+    <div class="header-actions">
+      <div class="search">
+        <i class="pi pi-search" aria-hidden="true"></i>
+        <input
+          class="p-inputtext"
+          type="search"
+          placeholder="질문이나 해결 방법 검색"
+          aria-label="게시글 검색"
+          readonly
+        />
+      </div>
+      <span class="p-button header-write is-static">
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        <span>글쓰기</span>
+      </span>
+    </div>
+  </div>
+</header>

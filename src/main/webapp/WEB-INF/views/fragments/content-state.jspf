@@ -1,0 +1,31 @@
+<%--
+  ContentState.jsx 변환 참고용 스니펫이다. loading, empty, error 상태에서
+  아래 마크업을 각 화면에 그대로 재사용하면 된다. title/description 텍스트와
+  노출 조건(JSTL <c:if>, <c:choose> 등)은 자바 개발자가 구현한다.
+
+  예)
+  role="alert"      -> tone="danger" (에러 상태)
+  role="status"      -> 그 외 상태 (empty 등)
+  아이콘 클래스(icon)는 pi-info-circle, pi-search, pi-exclamation-triangle 등으로 교체
+--%>
+
+<%-- 기본형 --%>
+<div class="content-state" role="status">
+  <span class="content-state-icon" aria-hidden="true"><i class="pi pi-info-circle"></i></span>
+  <h2>표시할 글이 없어요</h2>
+  <p>조건을 바꿔서 다시 검색해보세요.</p>
+</div>
+
+<%-- compact 형 (댓글 empty 등 좁은 영역용) --%>
+<div class="content-state content-state--compact" role="status">
+  <span class="content-state-icon" aria-hidden="true"><i class="pi pi-comment"></i></span>
+  <h2>아직 댓글이 없어요</h2>
+  <p>가장 먼저 댓글을 남겨보세요.</p>
+</div>
+
+<%-- danger(오류) 형 --%>
+<div class="content-state content-state--danger" role="alert">
+  <span class="content-state-icon" aria-hidden="true"><i class="pi pi-exclamation-triangle"></i></span>
+  <h2>글을 불러오지 못했어요</h2>
+  <p>잠시 후 다시 시도해주세요.</p>
+</div>
