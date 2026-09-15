@@ -5,7 +5,7 @@
       "title": "공지사항입니다",
       "type": "공지",
       "content": "다음 항목은 의도적으로 제공하지 않습니다.\n화면 간 링크, React Router, History API 처리\nAPI client와 모든 비동기 요청\nuseState, useEffect, useMemo를 포함한 화면 상태 관리\n클릭·제출·변경 이벤트 핸들러\n검색, 필터, 정렬, 페이지네이션 동작\n게시글과 댓글의 작성, 조회, 수정, 삭제\nvalidation, 글자 수 계산, 제출 버튼 활성화\nloading, empty, error, success 상태 판별과 재시도\n삭제·이탈 확인 Dialog의 열기, 닫기, focus 관리\nURL path·parameter·query와 화면 상태 동기화\n수정 검사",
-      "viewCount": 110,
+      "viewCount": 113,
       "writer": {
         "nickName": "운영자",
         "firstName": "운"
@@ -34,7 +34,7 @@
         "firstName": "테"
       },
       "content": "그래서 그냥 둘다..?",
-      "viewCount": 2,
+      "viewCount": 3,
       "type": "일반",
       "createdAt": "2026-09-15T01:52:32.998Z",
       "localDate": "2026-09-14 15:02"
@@ -112,7 +112,7 @@
         "firstName": "안"
       },
       "content": "왜죠",
-      "viewCount": 4,
+      "viewCount": 5,
       "type": "일반",
       "createdAt": "2026-09-15T04:33:27.358Z",
       "localDate": "2026-09-15 13:33:27"
@@ -125,7 +125,7 @@
         "firstName": "테"
       },
       "content": "유지 되고 나머진 하단에",
-      "viewCount": 3,
+      "viewCount": 9,
       "type": "일반",
       "createdAt": "2026-09-15T05:57:53.156Z",
       "localDate": "2026-09-15 14:57:53"

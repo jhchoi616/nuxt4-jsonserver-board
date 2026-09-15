@@ -13,12 +13,13 @@ export default function PostList(props) {
   useEffect(()=>{
     const loadData = async () => {
       console.log("지금 유즈이펙 돌아유");
+      console.log("지금 유즈이펙 돌아유");
       console.log(params.get("sort"));
       try{
         let defaultPage = params.get("page")|| 1;
-        const res = await fetchNotice(defaultPage,params.get("q"),params.get("sort"));
+        const res = await fetchNotice(defaultPage,decodeURIComponent(params.get("q")),params.get("sort"));
         setNotices(res);
-        const result = await fetchBoard(defaultPage,params.get("q"),params.get("sort"));
+        const result = await fetchBoard(defaultPage,decodeURIComponent(params.get("q")),params.get("sort"));
         setBoards(result);
       }finally{
         setLoading(true);
@@ -35,7 +36,7 @@ export default function PostList(props) {
   function prevPage(){
     let page = params.get("page") || 1;
     let sort = params.get("sort") || "createdAt";
-    let q = params.get("q") || "";
+    let q = encodeURIComponent(params.get("q")) || "";
     setParams({page:page-1,sort,q});
   }
   function nextPage(){
@@ -54,6 +55,7 @@ export default function PostList(props) {
     let q = params.get("q") || "";
     setParams({page,q,sort:event.target.value});
   }
+  console.log(decodeURIComponent(params.get("q")))
   return (
     <>
       <section className="page-intro" aria-labelledby="board-title">

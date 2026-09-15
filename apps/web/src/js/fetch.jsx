@@ -38,10 +38,16 @@ export async function fetchBoard(page = 1, q = '', sort = 'createdAt'){
   sort = sort || "createdAt";
   let sorts = "-"+sort;
   let url;
+  console.log("지금 검색값 넘어옴? : ",q);
   // 파라미터 우선순위가 내정되어있는 듯 함 섞어섞어 돌림판!
-  url =  `http://localhost:4100/posts?type_ne=공지&_sort=${sorts}&_page=${activePage}&_per_page=${limit}&_embed=comments`;
+// TODO 검색어 필터가 적용이 안됨
+
+// AI 사용 하자 q 검색 필터로 검색이 안됨
+// like도 안됨
+// eq 만 가능함
+  url =  `http://localhost:4100/posts?q=${q}&type_ne=공지&_sort=${sorts}&_page=${activePage}&_per_page=${limit}&_embed=comments`;
+  // if (q) url += `&q=${q}`;
   console.log("지금 보낸 쿼리문",url);
-   if (q) url += `&q=${q}`;
   const res = await fetch(url);
   const result = await res.json();
   console.log("조회 결과 : ",result);

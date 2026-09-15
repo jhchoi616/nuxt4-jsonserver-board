@@ -1,17 +1,29 @@
 import { InputText } from 'primereact/inputtext'
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 export default function AppHeader(props) {
   const [params,setParams] = useSearchParams();
-  const[search,setSearch]=useState("");
+  const [search,setSearch]=useState("");
+  const navigator = useNavigate();
+  const location = useLocation();
 console.log("넘겨받은 프로퍼티들 : ",props);
 // async function fetchSeqrch(){
 //   await fetchBoard();
 // }
   function handleSearch(e){
     setSearch(event.target.value);
-
+    let page = params.get("page") || 1;
+    let sort = params.get("sort") || "createdAt";
+    setParams({page,sort,q:encodeURIComponent(event.target.value)});
+console.log("??얘 뭔값임",location);
+    if(location.pathname !="/"){
+      navigator(`/${location.search}`);
+    }
+    // console.log(decodeURIComponent(params.get("q"))); 여기서 한글자씩 밀림
+    // 댓글 empty 처리
+    // 검색 값 올때마다? 여기서 디바운스 호출 ㅇㅋ
+    
   }
   function debounce(func, delay) {
     let timer;
