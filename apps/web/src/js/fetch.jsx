@@ -21,81 +21,29 @@ export async function fetchComment(query = ''){
   return comments
 }
 
-// 공지 리스트 조회
-export async function fetchNotice(q = '', sort = ''){
-    const res = await fetch(`http://localhost:4100/posts/?_embed=comments&q=${q}&_sort=createdAt&_order=${sort}&type=공지`)
-    const list = await res.json();
-    return list;
-}
-
-// 게시글 리스트 조회
+// 게시글 리스트 조회 (공지 + 일반, 검색/페이지네이션 포함)
 export async function fetchBoard(page = 1, q = '', sort = 'createdAt'){
-  console.log("넘어온 페이지 : ",page);
   const activePage = page || 1;
-  console.log("넘어온 active페이지 : ",activePage);
-  console.log("적용할 sort : ",sort);
   const limit = 6; // 한 페이지에 보여줄 개수
-  sort = sort || "createdAt";
-  let sorts = "-"+sort;
-  let url;
-  console.log("지금 검색값 넘어옴? : ",q);
-  // 파라미터 우선순위가 내정되어있는 듯 함 섞어섞어 돌림판!
-// TODO 검색어 필터가 적용이 안됨
+  const sorts = "-" + (sort || "createdAt");
 
-// AI 사용 하자 q 검색 필터로 검색이 안됨
-// like도 안됨
-// eq 만 가능함
-  url =  `http://localhost:4100/posts?q=${q}&type_ne=공지&_sort=${sorts}&_page=${activePage}&_per_page=${limit}&_embed=comments`;
-  // if (q) url += `&q=${q}`;
-  console.log("지금 보낸 쿼리문",url);
-  const res = await fetch(url);
-  const result = await res.json();
-  console.log("조회 결과 : ",result);
-  
-  if(!result.data){
-    // 구 버전 문법: _per_page 대신 _limit을 사용합니다. 문제는 여기도 안 먹고 신버전도 웹에서 직접 사용하면 되지만 버전이 안 맞음
-    // 아니 _page를 앞으로 당기니까 신버전으로 적용 또 다시 돌아감.. 일단 같이 두기!
-    // 구버전에서 page가 무시당함
-    url = `http://localhost:4100/posts?_page=${activePage}&_limit=${limit}&_embed=comments&type_ne=공지`;
-    
-  // 구 버전 검색 및 정렬 문법 적용
-  if (q) url += `&q=${q}`;
-  if (sort) url += `&sort=${sort}&_order=desc`;
-  
-  try {
-    const res = await fetch(url);
-    console.log("동작한 url : ",url)
-    // 헤더에서 전체 개수 가져오기 (대소문자 둘 다 체크)
-    const totalCountHeader = res.headers.get('X-Total-Count') || res.headers.get('x-total-count');
-    
-    let pageCount = 0;
-    
-    if (totalCountHeader !== null) {
-      const totalCount = parseInt(totalCountHeader, 10);
-      pageCount = Math.ceil(totalCount / limit);
-    } else {
-      
-      // 전체 데이터를 한 번 더 불러와 개수를 수동체크
-      const totalRes = await fetch(`http://localhost:4100/posts?type_ne=공지${q ? `&q=${q}` : ''}`);
-      const totalData = await totalRes.json();
-      pageCount = Math.ceil(totalData.length / limit);
-    }
-    
-    const boards = await res.json(); // 
-    console.log("다시 돌려보낼 list내용들 : ", boards);
-    return {
-      boards: boards,     // 게시글 배열 (최대 5개)
-      pageCount: pageCount // 총 페이지 수
-    };
-    
-  } catch (error) {
-    console.error("데이터 패치 실패:", error);
-    return { boards: [], pageCount: 0 };
-  }
-}
-console.log("구버전이면 여기 안옴 : ");
-  return {boards:result.data,pageCount:result.pages}
+  // json-server(1.0.0-beta.3)는 한글 값 필터(q, _ne, :contains 등)를 전부 무시하고
+  // 무조건 전체 목록을 반환하는 버그가 있음. 타입 제외/검색은 서버 대신 JS에서 처리.
+  // 공지/일반 둘 다 같은 전체 목록이 필요하므로 요청은 한 번만 보낸다.
+  const res = await fetch(`http://localhost:4100/posts?_sort=${sorts}&_embed=comments`);
+  const all = await res.json();
 
+  const matches = post => !q || post.title.includes(q) || post.content.includes(q);
+  const notices = all.filter(post => post.type === "공지" && matches(post));
+  const boards = all.filter(post => post.type !== "공지" && matches(post));
+
+  const pageCount = Math.ceil(boards.length / limit) || 1;
+
+  return {
+    notices,
+    boards: boards.slice((activePage - 1) * limit, activePage * limit),
+    pageCount,
+  };
 }
 
 // 새글 작성

@@ -1,5 +1,5 @@
 import { InputText } from 'primereact/inputtext'
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 
 export default function AppHeader(props) {
@@ -7,34 +7,22 @@ export default function AppHeader(props) {
   const [search,setSearch]=useState("");
   const navigator = useNavigate();
   const location = useLocation();
-console.log("넘겨받은 프로퍼티들 : ",props);
-// async function fetchSeqrch(){
-//   await fetchBoard();
-// }
+  const searchTimer = useRef(null);
+
   function handleSearch(e){
-    setSearch(event.target.value);
-    let page = params.get("page") || 1;
-    let sort = params.get("sort") || "createdAt";
-    setParams({page,sort,q:encodeURIComponent(event.target.value)});
-console.log("??얘 뭔값임",location);
-    if(location.pathname !="/"){
-      navigator(`/${location.search}`);
-    }
-    // console.log(decodeURIComponent(params.get("q"))); 여기서 한글자씩 밀림
-    // 댓글 empty 처리
-    // 검색 값 올때마다? 여기서 디바운스 호출 ㅇㅋ
-    
+    const value = e.target.value;
+    setSearch(value); // 입력창은 즉시 반영, 조회만 디바운스
+
+    clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(() => {
+      let page = params.get("page") || 1;
+      let sort = params.get("sort") || "createdAt";
+      setParams({page,sort,q:encodeURIComponent(value)});
+      if(location.pathname !="/"){
+        navigator(`/${location.search}`);
+      }
+    }, 300);
   }
-  function debounce(func, delay) {
-    let timer;
-    return function() {
-        const args = arguments;
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
-    }
-}
 
   return (
     <header className="site-header">

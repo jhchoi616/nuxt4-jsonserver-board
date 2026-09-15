@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom";
-import { fetchBoard, fetchNotice } from "../js/fetch";
+import { fetchBoard } from "../js/fetch";
 
 
 export default function PostList(props) {
@@ -17,9 +17,9 @@ export default function PostList(props) {
       console.log(params.get("sort"));
       try{
         let defaultPage = params.get("page")|| 1;
-        const res = await fetchNotice(defaultPage,decodeURIComponent(params.get("q")),params.get("sort"));
-        setNotices(res);
-        const result = await fetchBoard(defaultPage,decodeURIComponent(params.get("q")),params.get("sort"));
+        const q = decodeURIComponent(params.get("q") || "");
+        const result = await fetchBoard(defaultPage,q,params.get("sort"));
+        setNotices(result.notices);
         setBoards(result);
       }finally{
         setLoading(true);
