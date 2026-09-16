@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "json-server db.json --port 4100"
+    "dev": "node --env-file=.env guard.mjs"
   },
   "keywords": [],
   "author": "",
