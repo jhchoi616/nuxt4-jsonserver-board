@@ -13,12 +13,12 @@ export default function PostList(props) {
   useEffect(()=>{
     const loadData = async () => {
       console.log("지금 유즈이펙 돌아유");
-      console.log("지금 유즈이펙 돌아유");
       console.log(params.get("sort"));
       try{
         let defaultPage = params.get("page")|| 1;
         const q = decodeURIComponent(params.get("q") || "");
-        const result = await fetchBoard(defaultPage,q,params.get("sort"));
+        const type = params.get("type") || "all";
+        const result = await fetchBoard(defaultPage,q,params.get("sort"),type);
         setNotices(result.notices);
         setBoards(result);
       }finally{
@@ -36,24 +36,43 @@ export default function PostList(props) {
   function prevPage(){
     let page = params.get("page") || 1;
     let sort = params.get("sort") || "createdAt";
+    const type = params.get("type") || "all";
     let q = encodeURIComponent(params.get("q")) || "";
-    setParams({page:page-1,sort,q});
+    setParams({page:page-1,sort,q,type});
   }
   function nextPage(){
     let page = params.get("page") || 1;
     let sort = params.get("sort") || "createdAt";
     let q = params.get("q") || "";
-    setParams({page:parseInt(page)+1,sort,q});
+    const type = params.get("type") || "all";
+    setParams({page:parseInt(page)+1,sort,q,type});
   }
   function handlePage(idx){
     let sort = params.get("sort") || "createdAt";
     let q = params.get("q") || "";
-    setParams({page:idx.idx+1,q,sort});
+    const type = params.get("type") || "all";
+    setParams({page:idx.idx+1,q,sort,type});
   }
   function handleSort(){
     let page = params.get("page") || 1;
     let q = params.get("q") || "";
-    setParams({page,q,sort:event.target.value});
+    const type = params.get("type") || "all";
+    setParams({page,q,sort:event.target.value,type});
+  }
+
+  function handleTypeAll(){
+    let sort = params.get("sort") || "createdAt";
+    let q = params.get("q") || "";
+    let page = 1;
+    let type = "all";
+    setParams({page,q,sort,type});
+  }
+  function handleTypeNotice(){
+    let sort = params.get("sort") || "createdAt";
+    let q = params.get("q") || "";
+    let page = 1;
+    let type = "notice";
+    setParams({page,q,sort,type});
   }
   console.log(decodeURIComponent(params.get("q")))
   return (
@@ -68,13 +87,53 @@ export default function PostList(props) {
       </section>
 
       <section className="board-panel" aria-label="게시글 목록">
-        <div className="board-toolbar">
+        {!loading&&(<div className="post-list-skeleton" aria-busy="true" aria-label="게시글을 불러오고 있어요">
+  <div className="skeleton-row">
+    <div className="skeleton-copy">
+      <span className="skeleton-line skeleton-line--title"></span>
+      <span className="skeleton-line skeleton-line--meta"></span>
+    </div>
+    <span className="skeleton-block"></span>
+  </div>
+  <div className="skeleton-row">
+    <div className="skeleton-copy">
+      <span className="skeleton-line skeleton-line--title"></span>
+      <span className="skeleton-line skeleton-line--meta"></span>
+    </div>
+    <span className="skeleton-block"></span>
+  </div>
+  <div className="skeleton-row">
+    <div className="skeleton-copy">
+      <span className="skeleton-line skeleton-line--title"></span>
+      <span className="skeleton-line skeleton-line--meta"></span>
+    </div>
+    <span className="skeleton-block"></span>
+  </div>
+  <div className="skeleton-row">
+    <div className="skeleton-copy">
+      <span className="skeleton-line skeleton-line--title"></span>
+      <span className="skeleton-line skeleton-line--meta"></span>
+    </div>
+    <span className="skeleton-block"></span>
+  </div>
+  <div className="skeleton-row">
+    <div className="skeleton-copy">
+      <span className="skeleton-line skeleton-line--title"></span>
+      <span className="skeleton-line skeleton-line--meta"></span>
+    </div>
+    <span className="skeleton-block"></span>
+  </div>
+</div>
+)}
+{loading&& (
+
+  <div className="board-toolbar">
           <div className="tabs" role="group" aria-label="게시글 필터">
-            <button type="button" className="tab is-active" aria-pressed="true">전체</button>
-            <button type="button" className="tab" aria-pressed="false">공지</button>
+            <button type="button" className={`tab ${params.get("type")!="notice"?'is-active':''}`} onClick={handleTypeAll} aria-pressed="true">전체</button>
+            <button type="button" className={`tab ${params.get("type")=="notice"?'is-active':''}`} onClick={handleTypeNotice} aria-pressed="false">공지</button>
           </div>
           <div className="toolbar-meta">
-            <p className="result-count">10개의 글</p>
+            <p className="result-count">{loading && notices.length+boards.boards.length || 0}개의 글</p>
             <label className="sort-control">
               <span className="sr-only">게시글 정렬</span>
               <select defaultValue="createdAt" onChange={()=>handleSort()}>
@@ -86,17 +145,18 @@ export default function PostList(props) {
           </div>
         </div>
 
+        )}
           <div className="card card--list">
           <ul className="post-list">
         {loading && notices?.length>0 && notices.map(el=>{
 
 return (
-  <li key={`notice_${el.id}`} className="post-item is-notice">
+  <li key={`post_notice_${el.id}`} className="post-item is-notice">
               <div className="post-item-body">
                 <div className="post-item-head">
                   <span className="pill-notice">공지</span>
             <Link to={`/posts/${el.id}`}>
-                  <h2 className="post-item-title"><span>{el.title}</span></h2>
+                  <h2 className="post-item-title"><span>{el.title.length>22 ? el.title.slice(0,22)+"...":el.title}</span></h2>
             </Link>
                 </div>
                 <div className="post-item-meta">
@@ -117,36 +177,13 @@ return (
             </li>
             ) 
         })}
-
-            {/* <li className="post-item is-notice">
-              <div className="post-item-body">
-                <div className="post-item-head">
-                  <span className="pill-notice">공지</span>
-                  <h2 className="post-item-title"><span>이번 주 코드 리뷰 일정 안내</span></h2>
-                </div>
-                <div className="post-item-meta">
-                  <span className="post-author">운영자</span>
-                  <span className="sep" />
-                  <span>8월 11일</span>
-                  <span className="sep" />
-                  <span>조회 324</span>
-                </div>
-              </div>
-              <div className="post-item-side">
-                <span className="reply-count has-replies">
-                  <i className="pi pi-comment" aria-hidden="true" />
-                  <span className="sr-only">댓글 </span>
-                  3
-                </span>
-              </div>
-            </li> */}
             {loading && boards.boards?.length>0 && boards.boards.map(el=>
 
             <li key={`board_${el.id}`} className="post-item">
               <div className="post-item-body">
                 <div className="post-item-head">
                   <Link to={`/posts/${el.id}`}>
-                  <h2 className="post-item-title"><span>{el.title}</span></h2>
+                  <h2 className="post-item-title"><span>{el.title.length>22 ? el.title.slice(0,22)+"...":el.title}</span></h2>
                   </Link>
                 </div>
                 <div className="post-item-meta">
@@ -166,7 +203,24 @@ return (
               </div>
             </li>
             )}
-
+ {loading && boards.boards?.length < 1 && notices?.length<1 && (
+  <>
+  <div className="content-state" role="status">
+  <span className="content-state-icon" aria-hidden="true"><i className="pi pi-info-circle"></i></span>
+  <h2>표시할 글이 없어요</h2>
+  <p>조건을 바꿔서 다시 검색해보세요.</p>
+</div>
+  </>
+ )}
+ {loading && params.get("type")!="all" && notices?.length<1 && (
+    <>
+  <div className="content-state" role="status">
+  <span className="content-state-icon" aria-hidden="true"><i className="pi pi-info-circle"></i></span>
+  <h2>표시할 글이 없어요</h2>
+  <p>조건을 바꿔서 다시 검색해보세요.</p>
+</div>
+  </>
+ )}
             {/* <li className="post-item">
               <div className="post-item-body">
                 <div className="post-item-head">
@@ -185,116 +239,6 @@ return (
                   <i className="pi pi-comment" aria-hidden="true" />
                   <span className="sr-only">댓글 </span>
                   5
-                </span>
-              </div>
-            </li>
-
-            <li className="post-item">
-              <div className="post-item-body">
-                <div className="post-item-head">
-                  <h2 className="post-item-title"><span>테이블에 정렬 붙이는 방법 정리했습니다</span></h2>
-                </div>
-                <div className="post-item-meta">
-                  <span className="post-author">작성자4</span>
-                  <span className="sep" />
-                  <span>8월 8일</span>
-                  <span className="sep" />
-                  <span>조회 243</span>
-                </div>
-              </div>
-              <div className="post-item-side">
-                <span className="reply-count">
-                  <i className="pi pi-comment" aria-hidden="true" />
-                  <span className="sr-only">댓글 </span>
-                  0
-                </span>
-              </div>
-            </li>
-
-            <li className="post-item">
-              <div className="post-item-body">
-                <div className="post-item-head">
-                  <h2 className="post-item-title"><span>상세 화면에서 새로고침하면 내용이 사라져요</span></h2>
-                </div>
-                <div className="post-item-meta">
-                  <span className="post-author">작성자3</span>
-                  <span className="sep" />
-                  <span>8월 7일</span>
-                  <span className="sep" />
-                  <span>조회 216</span>
-                </div>
-              </div>
-              <div className="post-item-side">
-                <span className="reply-count has-replies">
-                  <i className="pi pi-comment" aria-hidden="true" />
-                  <span className="sr-only">댓글 </span>
-                  1
-                </span>
-              </div>
-            </li>
-
-            <li className="post-item">
-              <div className="post-item-body">
-                <div className="post-item-head">
-                  <h2 className="post-item-title"><span>작성 폼 유효성 검사 어디까지 하셨어요?</span></h2>
-                </div>
-                <div className="post-item-meta">
-                  <span className="post-author">작성자2</span>
-                  <span className="sep" />
-                  <span>8월 6일</span>
-                  <span className="sep" />
-                  <span>조회 189</span>
-                </div>
-              </div>
-              <div className="post-item-side">
-                <span className="reply-count has-replies">
-                  <i className="pi pi-comment" aria-hidden="true" />
-                  <span className="sr-only">댓글 </span>
-                  2
-                </span>
-              </div>
-            </li>
-
-            <li className="post-item">
-              <div className="post-item-body">
-                <div className="post-item-head">
-                  <h2 className="post-item-title"><span>json-server 응답 구조 정리해봤습니다</span></h2>
-                </div>
-                <div className="post-item-meta">
-                  <span className="post-author">작성자1</span>
-                  <span className="sep" />
-                  <span>8월 5일</span>
-                  <span className="sep" />
-                  <span>조회 162</span>
-                </div>
-              </div>
-              <div className="post-item-side">
-                <span className="reply-count has-replies">
-                  <i className="pi pi-comment" aria-hidden="true" />
-                  <span className="sr-only">댓글 </span>
-                  4
-                </span>
-              </div>
-            </li>
-
-            <li className="post-item">
-              <div className="post-item-body">
-                <div className="post-item-head">
-                  <h2 className="post-item-title"><span>모바일에서 목록이 잘리는 현상 해결했습니다</span></h2>
-                </div>
-                <div className="post-item-meta">
-                  <span className="post-author">작성자5</span>
-                  <span className="sep" />
-                  <span>8월 4일</span>
-                  <span className="sep" />
-                  <span>조회 135</span>
-                </div>
-              </div>
-              <div className="post-item-side">
-                <span className="reply-count">
-                  <i className="pi pi-comment" aria-hidden="true" />
-                  <span className="sr-only">댓글 </span>
-                  0
                 </span>
               </div>
             </li>

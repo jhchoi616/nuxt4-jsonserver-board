@@ -1,7 +1,7 @@
 import { PrimeReactProvider } from 'primereact/api'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {BrowserRouter} from 'react-router-dom'
+import {BrowserRouter, createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 import App from './App.jsx'
 
@@ -9,12 +9,22 @@ import 'primereact/resources/themes/lara-light-blue/theme.css'
 import 'primeicons/primeicons.css'
 import './styles.css'
 
-createRoot(document.getElementById('app')).render(
-  // <StrictMode>
+const router = createBrowserRouter([
+  {
+    path: "*",
+    element: <App />,
+  },
+]);
+
+createRoot(document.getElementById("app")).render(
     <PrimeReactProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </PrimeReactProvider>
-  // </StrictMode>,
-)
+);
+// createRoot(document.getElementById('app')).render(
+//   // <StrictMode>
+//       <BrowserRouter>
+//         <App />
+//       </BrowserRouter>
+//   // </StrictMode>,
+// )

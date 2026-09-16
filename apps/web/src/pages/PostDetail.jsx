@@ -32,7 +32,9 @@ export default function PostDetail(props) {
   loadData();  
   },[]);
 function handleComment(e){
-  setComment(e.target.value);
+  if(e.target.value.trim().length<=500){
+    setComment(e.target.value);
+  }
 }
 async function commentSubmit(){
   setCommentLoading(true);
@@ -54,6 +56,8 @@ async function commentSubmit(){
         alert("등록에 성공하였습니다.");
         setComment("");
         location.reload();
+      }else{
+        alert(msg);
       }
 
   setCommentLoading(false);
@@ -67,7 +71,7 @@ const handleRemove = async() =>{
     alert("삭제가 완료되었습니다.");
     navigate("/");
   }else{
-    alert("삭제에 실패하였습니다.",e);
+    alert("삭제에 실패하였습니다.",msg);
     navigate(-1);
   }
 }
@@ -121,6 +125,25 @@ const handleRemove = async() =>{
         </div>
       </article>
       )}
+      {!loading && (
+        <div className="article-skeleton" aria-busy="true" aria-label="게시글을 불러오고 있어요">
+  <span className="skeleton-line skeleton-line--heading"></span>
+  <span className="skeleton-line skeleton-line--heading-short"></span>
+  <span className="skeleton-line skeleton-line--meta"></span>
+  <div className="skeleton-body">
+    <span className="skeleton-line"></span>
+    <span className="skeleton-line"></span>
+    <span className="skeleton-line skeleton-line--body-short"></span>
+  </div>
+</div>
+)}
+      {loading && !post && (
+        <div className="content-state content-state--danger" role="alert">
+  <span className="content-state-icon" aria-hidden="true"><i className="pi pi-exclamation-triangle"></i></span>
+  <h2>글을 불러오지 못했어요</h2>
+  <p>다시 시도해주세요.</p>
+</div>
+      )}
 
       <section className="card comments-card">
         <div className="section-heading">
@@ -144,6 +167,13 @@ const handleRemove = async() =>{
             </div>
           </li>
         })}
+        {loading && comments.length<1 && (
+          <div className="content-state content-state--compact" role="status">
+  <span className="content-state-icon" aria-hidden="true"><i className="pi pi-comment"></i></span>
+  <h2>아직 댓글이 없어요</h2>
+  <p>가장 먼저 댓글을 남겨보세요.</p>
+</div>
+        )}
          
         </ul>
 

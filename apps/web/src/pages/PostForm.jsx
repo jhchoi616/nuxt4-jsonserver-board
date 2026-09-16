@@ -2,7 +2,7 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useBlocker, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { fetchBoard, fetchCreate, fetchPatch, fetchPost } from '../js/fetch'
 import { useEffect, useRef, useState } from 'react'
 
@@ -15,6 +15,17 @@ export default function PostForm(props) {
   const [formNickName, setFormNickName]=useState("");
   const [formContent, setFormContent]=useState("");
   const [loading, setLoading] = useState(false);
+  const [dialog,setDialog] = useState(false);
+  const [when, setWhen] = useState(true);
+  const navigate = useNavigate();
+  const [parameters,setParameters] = useSearchParams();
+ const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) => {
+     return when && currentLocation.pathname !== nextLocation.pathname
+    }
+  );
+
+
   function handleTitle(e){
     if(e.target.value.length<=100)
     setFormTitle(e.target.value);
@@ -29,7 +40,7 @@ export default function PostForm(props) {
   }
 
   useEffect(()=>{
-
+    
     if(id){
       const loadData = async () => {
         const res = await fetchPost(id);
@@ -39,9 +50,59 @@ export default function PostForm(props) {
         if(res.writer.nickName)setFormNickName(res.writer.nickName);
       };
       loadData();
-
+    }else{
+      let data = localStorage.getItem("board");
+      
+      if(data){
+        console.log("??");
+        data = JSON.parse(data);
+        setFormTitle(data.formTitle);
+        setFormContent(data.formContent);
+        setFormNickName(data.formNickName);
+      }
     }
   },[]);
+
+
+  useEffect(() => {
+    console.log(blocker)
+    console.log(blocker.state);
+    console.log(dialog);
+    if (blocker.state == "blocked") {
+      console.log("?")
+      setDialog(true);
+      return;
+    }
+    // if (window.confirm("정말로 이동하시겠습니까?")) {
+    //   blocker.proceed();
+    // } else {
+    //   blocker.reset();
+    // }
+  }, [blocker.state]);
+
+function handlePage(){
+  console.log("아이디 확인 : ",id);
+  setDialog(false);
+  if(!id)
+    localStorage.setItem("board",JSON.stringify({formTitle,formNickName,formContent}));
+  if(blocker.state === "blocked"){
+
+    setWhen(false);
+    setTimeout(() => {
+      const move = blocker.location.pathname + `?page=${parameters.get("page")||1}&sort=${parameters.get("sort")||"createdAt"}&q=${parameters.get("q")||""}`;
+      console.log("이동하려는 내용 : ",move);
+      console.log(parameters.get("q"));
+      console.log(parameters.get("sort"));
+      console.log(parameters.get("page"));
+      navigate(move);
+      
+    }, 1);
+    
+    
+    // 3. blocker 상태 초기화
+    blocker.reset();
+  }
+}
 
     const submit = async () => {
       setLoading(true);
@@ -77,6 +138,7 @@ export default function PostForm(props) {
       let msg = await fetchCreate(formTitle,formNickName,formContent)
       if(msg=="success"){
         alert("등록에 성공하였습니다.");
+        localStorage.clear();
         setFormTitle("");
         setFormNickName("");
         setFormContent("");
@@ -156,6 +218,7 @@ export default function PostForm(props) {
             <div className="field-foot">
               <span className="field-hint" id="content-count">{formContent?.trim().length} / 2,000자</span>
             </div>
+              <span className="field-hint" id="content-err" hidden>입력하신 내용이 {formContent?.trim().length}자로 2000자를 넘거나 0자입니다.</span>
           </div>
 
           <div className="form-footer">
@@ -179,13 +242,30 @@ export default function PostForm(props) {
 
       {/* 퍼블리싱된 이탈 확인 UI. visible 상태와 이벤트는 인턴이 구현한다. */}
       <Dialog
-        visible={false}
+        visible={dialog}
         header="작성을 그만둘까요?"
         draggable={false}
+        onHide={()=>{
+          setDialog(false);
+          if(blocker.state === "blocked"){
+            blocker.reset();
+          }
+        }}
         footer={(
           <>
-            <Button type="button" label="계속 작성" severity="help" />
-            <Button type="button" label="내용 버리고 나가기" severity="danger" />
+            <Button type="button" label="계속 작성" 
+            onClick={()=>{
+              setDialog(false);
+              if (blocker.state === "blocked") {
+                blocker.reset();
+              }}}
+               severity="help" />
+               {id && (
+                 <Button type="button" label="내용 버리고 나가기" onClick={handlePage} severity="danger" />
+               )}
+               {!id && (
+                 <Button type="button" label="임시저장하고 나가기" onClick={handlePage} severity="danger" />
+               )}
           </>
         )}
       >

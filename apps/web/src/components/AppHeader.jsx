@@ -12,12 +12,13 @@ export default function AppHeader(props) {
   function handleSearch(e){
     const value = e.target.value;
     setSearch(value); // 입력창은 즉시 반영, 조회만 디바운스
-
+    
     clearTimeout(searchTimer.current);
     searchTimer.current = setTimeout(() => {
       let page = params.get("page") || 1;
       let sort = params.get("sort") || "createdAt";
-      setParams({page,sort,q:encodeURIComponent(value)});
+      let type = params.get("type") || "all";
+      setParams({page,sort,q:encodeURIComponent(value),type});
       if(location.pathname !="/"){
         navigator(`/${location.search}`);
       }

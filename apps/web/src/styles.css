@@ -57,7 +57,9 @@
 * {
   box-sizing: border-box;
 }
-
+a {
+  text-decoration: none;
+}
 html {
   min-width: 320px;
   background: var(--surface);
@@ -231,6 +233,7 @@ textarea {
   max-width: 768px;
   font-size: var(--type-title);
   line-height: 45px;
+  overflow-wrap: break-word;
 }
 
 .page-description {
