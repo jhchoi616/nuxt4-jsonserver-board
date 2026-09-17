@@ -1,6 +1,6 @@
 import { act } from "react";
 
-const origin = "http://" + window.location.hostname + ":4100";
+const origin = window.location.protocol+"://" + window.location.hostname + ":4100";
 // 게시글 단건 조회
 export async function fetchPost(query = ''){
   const res = await fetch(`${origin}/posts/?id=${query}`) // GET
