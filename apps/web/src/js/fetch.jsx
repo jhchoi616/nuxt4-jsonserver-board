@@ -1,6 +1,7 @@
 import { act } from "react";
-
-const origin = window.location.protocol+"//" + window.location.hostname + ":4100";
+// Render 서버 주소
+const origin = "https://nuxt4-jsonserver-board.onrender.com/";
+// window.location.protocol+"//" + window.location.hostname + ":4100";
 // 게시글 단건 조회
 export async function fetchPost(query = ''){
   const res = await fetch(`${origin}/posts/?id=${query}`) // GET
