@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "json-server db.json --port 4100",
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "start:guarded": "node simple-guard.mjs"
   },
   "keywords": [],
   "author": "",
