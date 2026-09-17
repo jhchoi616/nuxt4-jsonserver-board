@@ -20,8 +20,18 @@ export default function PostList(props) {
         const q = decodeURIComponent(params.get("q") || "");
         const type = params.get("type") || "all";
         const result = await fetchBoard(defaultPage,q,params.get("sort"),type);
-        setNotices(result.notices);
-        setBoards(result);
+        console.log(result);
+
+        if(result.notices){
+          setNotices(result.notices);
+          setBoards(result);
+        }else{
+          console.log("메시지 넘어옴?");
+          console.log(result);
+        }
+      } catch(e){
+        console.log("list 호출 에러 ");
+        console.log(e);
       }finally{
         setLoading(true);
       }
@@ -126,7 +136,7 @@ export default function PostList(props) {
   </div>
 </div>
 )}
-{loading&& (
+{loading && notices && (
 
   <div className="board-toolbar">
           <div className="tabs" role="group" aria-label="게시글 필터">

@@ -5,6 +5,8 @@ console.log("주소 확인 ");
 console.log("href:", window.location.href);
 console.log("origin:", window.location.origin);
 console.log("pathname:", window.location.pathname);
+
+
 // 게시글 단건 조회
 export async function fetchPost(query = ''){
   console.log("주소 확인 ");
@@ -12,8 +14,9 @@ console.log("href:", window.location.href);
 console.log("origin:", window.location.origin);
 console.log("pathname:", window.location.pathname);
 console.log("보내려는 주소 : ", origin);
-  const res = await fetch(`${origin}/posts/?id=${query}`) // GET
-  const post = await res.json();
+let post;
+  await fetch(`${origin}/posts/?id=${query}`).then(res=>res.json()).then(data=>post = data[0]).catch(e=>console.error(e)); // GET
+  
   return post[0]
 }
 
@@ -39,12 +42,18 @@ export async function fetchBoard(page = 1, q = '', sort = 'createdAt',type="all"
   const activePage = page || 1;
   const limit = 6; // 한 페이지에 보여줄 개수
   const sorts = "-" + (sort || "createdAt");
-
+  console.log("주소 확인 ");
+console.log("href:", window.location.href);
+console.log("origin:", window.location.origin);
+console.log("pathname:", window.location.pathname);
+console.log("보내려는 주소 : ", origin);
   // json-server(1.0.0-beta.3)는 한글 값 필터(q, _ne, :contains 등)를 전부 무시하고
   // 무조건 전체 목록을 반환하는 버그가 있음. 타입 제외/검색은 서버 대신 JS에서 처리.
   // 공지/일반 둘 다 같은 전체 목록이 필요하므로 요청은 한 번만 보낸다.
-  const res = await fetch(`${origin}/posts?_sort=${sorts}&_embed=comments`);
-  const all = await res.json();
+  let all;
+  let msg;
+  await fetch(`${origin}/posts?_sort=${sorts}&_embed=comments`).then(res=>res.json()).then((data)=>all=data).catch(e=>msg=e);
+  if(msg)return msg;
   const matches = post => !q || post.title.includes(q) || post.content.includes(q);
   if(type=="all"){
 
