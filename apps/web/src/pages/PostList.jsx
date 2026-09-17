@@ -12,6 +12,7 @@ export default function PostList(props) {
   console.log("초기 파라미터 : ",params.get("sort"));
   useEffect(()=>{
     const loadData = async () => {
+      console.log("주소 확인 : ", window.location.origin);
       console.log("지금 유즈이펙 돌아유");
       console.log(params.get("sort"));
       try{
