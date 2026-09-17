@@ -133,7 +133,7 @@ export default function PostList(props) {
             <button type="button" className={`tab ${params.get("type")=="notice"?'is-active':''}`} onClick={handleTypeNotice} aria-pressed="false">공지</button>
           </div>
           <div className="toolbar-meta">
-            <p className="result-count">{loading && boards && notices?.length+boards?.boards?.length || notices?.length || 0}개의 글</p>
+            <p className="result-count">{loading && boards && notices && notices?.length+boards?.boards?.length || notices?.length || 0}개의 글</p>
             <label className="sort-control">
               <span className="sr-only">게시글 정렬</span>
               <select defaultValue="createdAt" onChange={()=>handleSort()}>
@@ -148,7 +148,7 @@ export default function PostList(props) {
         )}
           <div className="card card--list">
           <ul className="post-list">
-        {loading && notices?.length>0 && notices.map(el=>{
+        {loading && notices && notices?.length>0 && notices.map(el=>{
 
 return (
   <li key={`post_notice_${el.id}`} className="post-item is-notice">
@@ -177,7 +177,7 @@ return (
             </li>
             ) 
         })}
-            {loading && boards.boards?.length>0 && boards.boards.map(el=>
+            {loading && boards && boards.boards?.length>0 && boards.boards.map(el=>
 
             <li key={`board_${el.id}`} className="post-item">
               <div className="post-item-body">
@@ -203,7 +203,7 @@ return (
               </div>
             </li>
             )}
- {loading && boards.boards?.length < 1 && notices?.length<1 && (
+ {loading && boards && boards.boards?.length < 1 && notices && notices?.length<1 && (
   <>
   <div className="content-state" role="status">
   <span className="content-state-icon" aria-hidden="true"><i className="pi pi-info-circle"></i></span>
@@ -212,7 +212,7 @@ return (
 </div>
   </>
  )}
- {loading && params.get("type")!="all" && notices?.length<1 && (
+ {loading && notices && params.get("type")!="all" && notices?.length<1 && (
     <>
   <div className="content-state" role="status">
   <span className="content-state-icon" aria-hidden="true"><i className="pi pi-info-circle"></i></span>
@@ -269,8 +269,8 @@ return (
       </section>
 
       <div className="pager" aria-label="페이지 이동 UI">
-        <span className={loading && boards.pageCount >= params.get("page") && params.get("page") > 1 ? "is-static":"is-disabled"} onClick={prevPage} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
-        {loading && boards.pageCount>1 && Array.from({"length":boards.pageCount},(_,idx)=>{
+        <span className={loading && boards && boards.pageCount >= params.get("page") && params.get("page") > 1 ? "is-static":"is-disabled"} onClick={prevPage} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
+        {loading&& boards && boards.pageCount>1 && Array.from({"length":boards.pageCount},(_,idx)=>{
           if(params==idx)
           return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})} aria-current="page">{idx+1}</span>)
           else return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})} >{idx+1}</span>)
