@@ -29,7 +29,7 @@ export async function fetchBoard(page = 1, q = '', sort = 'createdAt',type="all"
   const activePage = page || 1;
   const limit = 6; // 한 페이지에 보여줄 개수
   const sorts = "-" + (sort || "createdAt");
-
+console.log(origin);
   // json-server(1.0.0-beta.3)는 한글 값 필터(q, _ne, :contains 등)를 전부 무시하고
   // 무조건 전체 목록을 반환하는 버그가 있음. 타입 제외/검색은 서버 대신 JS에서 처리.
   // 공지/일반 둘 다 같은 전체 목록이 필요하므로 요청은 한 번만 보낸다.
