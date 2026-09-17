@@ -7,6 +7,11 @@ console.log("origin:", window.location.origin);
 console.log("pathname:", window.location.pathname);
 // 게시글 단건 조회
 export async function fetchPost(query = ''){
+  console.log("주소 확인 ");
+console.log("href:", window.location.href);
+console.log("origin:", window.location.origin);
+console.log("pathname:", window.location.pathname);
+console.log("보내려는 주소 : ", origin);
   const res = await fetch(`${origin}/posts/?id=${query}`) // GET
   const post = await res.json();
   return post[0]
