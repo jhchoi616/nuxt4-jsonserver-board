@@ -1,6 +1,10 @@
 import { act } from "react";
 
 const origin = window.location.origin || "http://127.0.0.1:4100";
+console.log("주소 확인 ");
+console.log("href:", window.location.href);
+console.log("origin:", window.location.origin);
+console.log("pathname:", window.location.pathname);
 // 게시글 단건 조회
 export async function fetchPost(query = ''){
   const res = await fetch(`${origin}/posts/?id=${query}`) // GET
@@ -10,6 +14,7 @@ export async function fetchPost(query = ''){
 
 // 조회수 증가
 export async function fetchIncrease(query='', viewCount = 0){
+  console.log("지금 보내려는 오리지ㅣㄴ 주소 : ",origin);
   console.log("넘어온 viewCount : ",viewCount);
   const res = await fetch(`${origin}/posts/${query}`,{
     method:"PATCH",
