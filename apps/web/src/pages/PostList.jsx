@@ -22,16 +22,16 @@ export default function PostList(props) {
         const result = await fetchBoard(defaultPage,q,params.get("sort"),type);
         console.log(result);
 
-        if(result.notices){
+        if(result?.notices){
           setNotices(result.notices);
           setBoards(result);
         }else{
           console.log("메시지 넘어옴?");
           console.log(result);
         }
-      } catch(e){
+      } catch(err){
         console.log("list 호출 에러 ");
-        console.log(e);
+        console.log(err);
       }finally{
         setLoading(true);
       }
