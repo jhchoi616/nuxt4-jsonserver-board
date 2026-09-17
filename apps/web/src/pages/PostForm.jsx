@@ -27,16 +27,25 @@ export default function PostForm(props) {
 
 
   function handleTitle(e){
-    if(e.target.value.length<=100)
-    setFormTitle(e.target.value);
+    if(e.target.value.length<=100){
+      if(loading)
+        setLoading(false);
+      setFormTitle(e.target.value);
+    }
   }
   function handleNickName(e){
-    if(e.target.value.length<=20)
-    setFormNickName(e.target.value);
+    if(e.target.value.length<=20){
+      if(loading)
+        setLoading(false);
+      setFormNickName(e.target.value);
+    }
   }
   function handleContent(e){
-    if(e.target.value.length<=2000)
-    setFormContent(e.target.value);
+    if(e.target.value.length<=2000){
+      if(loading)
+        setLoading(false);
+      setFormContent(e.target.value);
+    }
   }
 
   useEffect(()=>{

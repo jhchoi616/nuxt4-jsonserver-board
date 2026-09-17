@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "json-server db.json --port 4100"
+    "dev": "json-server db.json --port 4100",
+    "start": "node server.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
+    "cors": "^2.8.6",
     "json-server": "1.0.0-beta.3"
   }
 }

@@ -7,6 +7,7 @@
     "dev": "concurrently -n API,WEB -c auto --kill-others \"pnpm -C apps/api dev\" \"pnpm -C apps/web dev\"",
     "dev:api": "pnpm -C apps/api dev",
     "dev:web": "pnpm -C apps/web dev",
+    "start:api": "pnpm -C apps/api start",
     "build": "pnpm --filter ./apps/web build"
   },
    

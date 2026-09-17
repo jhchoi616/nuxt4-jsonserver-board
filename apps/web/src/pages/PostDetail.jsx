@@ -19,12 +19,13 @@ export default function PostDetail(props) {
    const loadData = async ()=>{
     try{
       const board = await fetchPost(id);
+      await fetchIncrease(id,board.viewCount);
+      board.viewCount=parseInt(board.viewCount)+1;
       setPost(board);
       console.log(board);
       const comments = await fetchComment(id);
       setComments(comments);
       console.log("넘어가는 post.viewCount : ",board.viewCount);
-      await fetchIncrease(id,board.viewCount);
     }finally{
       setLoading(true);
     }

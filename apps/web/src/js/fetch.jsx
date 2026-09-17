@@ -12,6 +12,7 @@ export async function fetchPost(query = ''){
 // 조회수 증가
 export async function fetchIncrease(query='', viewCount = 0){
   console.log("넘어온 viewCount : ",viewCount);
+  viewCount=parseInt(viewCount);
   const res = await fetch(`${origin}/posts/${query}`,{
     method:"PATCH",
     headers:{"Content-Type":"application/json"},
@@ -27,6 +28,21 @@ export async function fetchComment(query = ''){
 
 // 게시글 리스트 조회 (공지 + 일반, 검색/페이지네이션 포함)
 export async function fetchBoard(page = 1, q = '', sort = 'createdAt',type="all"){
+  try{
+    if(parseInt(page)<1){
+      return {
+      notices:[],
+      boards:[],
+      pageCount:0
+    }
+    }
+  }catch(e){
+    return {
+      notices:[],
+      boards:[],
+      pageCount:0
+    }
+  }
   const activePage = page || 1;
   const limit = 6; // 한 페이지에 보여줄 개수
   const sorts = "-" + (sort || "createdAt");
