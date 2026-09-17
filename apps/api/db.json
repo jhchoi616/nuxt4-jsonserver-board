@@ -157,71 +157,6 @@
       "localDate": "2026-09-16 15:19:05"
     },
     {
-      "id": "0z",
-      "title": "공지사항입니다",
-      "type": "공지",
-      "content": "목록의 공지사항 댓글과 상세페이지의 댓글 갯수가 다름.",
-      "viewCount": 10019,
-      "writer": {
-        "nickName": "운영자",
-        "firstName": "운"
-      },
-      "createdAt": "2026-09-18T05:13:22.506Z",
-      "localDate": "2026-09-18 14:13:22"
-    },
-    {
-      "id": "0",
-      "title": "공지 탭 활성화가 안됨",
-      "type": "공지",
-      "content": "",
-      "viewCount": 1.2836935468247645e+52,
-      "writer": {
-        "nickName": "운영자",
-        "firstName": "운"
-      },
-      "createdAt": "2026-09-18T05:13:22.506Z",
-      "localDate": "2026-09-18 14:13:22"
-    },
-    {
-      "id": "0asdasdqw",
-      "title": "공지사항을 추가함.",
-      "type": "공지사항이 4개가 됨",
-      "content": "",
-      "viewCount": "이백삼십일일일1",
-      "writer": {
-        "nickName": "운영자",
-        "firstName": "운"
-      },
-      "createdAt": "2026-09-18T05:13:22.506Z",
-      "localDate": "2026-09-18 14:13:22"
-    },
-    {
-      "id": "0aa",
-      "title": "공지사항을 추가함.",
-      "type": "공지",
-      "content": "공지사항이 4개가 됨",
-      "viewCount": "-12",
-      "writer": {
-        "nickName": "운영자",
-        "firstName": "운"
-      },
-      "createdAt": "2026-09-18T05:13:22.506Z",
-      "localDate": "2026-09-18 14:13:22"
-    },
-    {
-      "id": "123d4",
-      "title": "공지사항이 5개가 됨.",
-      "type": "공지",
-      "content": "공지사항이 5개가 됨",
-      "viewCount": "-1911111111",
-      "writer": {
-        "nickName": "운영자",
-        "firstName": "운"
-      },
-      "createdAt": "2026-09-18T05:13:22.506Z",
-      "localDate": "2026-09-18 14:13:22"
-    },
-    {
       "id": "e621",
       "title": "ㅏㄴ이라;ㅣㄴㄹ아ㅣㄴㅇ라;ㄹ아ㅣ;",
       "writer": {
@@ -467,32 +402,6 @@
       "type": "일반",
       "createdAt": "2026-09-16T08:21:10.012Z",
       "localDate": "2026-09-16 17:21:10"
-    },
-    {
-      "id": "48e1",
-      "writer": {
-        "nickName": "작성자4",
-        "firstName": "작"
-      },
-      "content": "213",
-      "postId": "0",
-      "viewCount": 0,
-      "type": "일반",
-      "createdAt": "2026-09-16T08:21:22.047Z",
-      "localDate": "2026-09-16 17:21:22"
-    },
-    {
-      "id": "2662",
-      "writer": {
-        "nickName": "작성자7",
-        "firstName": "작"
-      },
-      "content": "213",
-      "postId": "0",
-      "viewCount": 0,
-      "type": "일반",
-      "createdAt": "2026-09-16T08:21:23.626Z",
-      "localDate": "2026-09-16 17:21:23"
     }
   ]
 }
