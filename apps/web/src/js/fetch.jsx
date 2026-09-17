@@ -52,7 +52,15 @@ console.log("보내려는 주소 : ", origin);
   // 공지/일반 둘 다 같은 전체 목록이 필요하므로 요청은 한 번만 보낸다.
   let all;
   let msg;
-  await fetch(`${origin}/posts?_sort=${sorts}&_embed=comments`).then(res=>res.json()).then((data)=>all=data).catch(e=>msg=e);
+  await fetch(`${origin}/posts?_sort=${sorts}&_embed=comments`).then(res=>res.json()).then((data)=>all=data).catch(e=>{
+    if(error instanceof SyntaxError){
+      console.error("에러 발생");
+      console.log(error?.headers);
+      console.log(error);
+      console.log(JSON.stringify(error));
+    }
+    msg=e
+  });
   if(msg)return msg;
   const matches = post => !q || post.title.includes(q) || post.content.includes(q);
   if(type=="all"){
