@@ -88,7 +88,7 @@ export default function PostList(props) {
       </section>
 
       <section className="board-panel" aria-label="게시글 목록">
-        {!loading&&(<div className="post-list-skeleton" aria-busy="true" aria-label="게시글을 불러오고 있어요">
+        {!loading || !boards && !notices && (<div className="post-list-skeleton" aria-busy="true" aria-label="게시글을 불러오고 있어요">
   <div className="skeleton-row">
     <div className="skeleton-copy">
       <span className="skeleton-line skeleton-line--title"></span>
