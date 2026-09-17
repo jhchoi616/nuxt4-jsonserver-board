@@ -9,6 +9,7 @@
     "dev:web": "pnpm -C apps/web dev",
     "build": "pnpm --filter ./apps/web build"
   },
+   
   "keywords": [],
   "author": "",
   "license": "ISC",

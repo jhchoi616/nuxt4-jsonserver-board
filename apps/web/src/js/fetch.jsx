@@ -1,6 +1,6 @@
 import { act } from "react";
 
-const origin = "http://192.168.1.139:4100";
+const origin = "http://127.0.0.1:4100";
 // 게시글 단건 조회
 export async function fetchPost(query = ''){
   const res = await fetch(`${origin}/posts/?id=${query}`) // GET
