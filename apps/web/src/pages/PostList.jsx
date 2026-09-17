@@ -133,7 +133,7 @@ export default function PostList(props) {
             <button type="button" className={`tab ${params.get("type")=="notice"?'is-active':''}`} onClick={handleTypeNotice} aria-pressed="false">공지</button>
           </div>
           <div className="toolbar-meta">
-            <p className="result-count">{loading && notices.length+boards.boards.length || 0}개의 글</p>
+            <p className="result-count">{loading && boards && notices?.length+boards?.boards?.length || notices?.length || 0}개의 글</p>
             <label className="sort-control">
               <span className="sr-only">게시글 정렬</span>
               <select defaultValue="createdAt" onChange={()=>handleSort()}>
