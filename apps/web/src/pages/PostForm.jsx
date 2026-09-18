@@ -98,7 +98,7 @@ function handlePage(){
 
     setWhen(false);
     setTimeout(() => {
-      const move = blocker.location.pathname + `?page=${parameters.get("page")||1}&sort=${parameters.get("sort")||"createdAt"}&q=${parameters.get("q")||""}`;
+      const move = blocker.location.pathname + `?page=${parseInt(parameters.get("page"))||1}&sort=${parameters.get("sort")||"createdAt"}&q=${parameters.get("q")||""}`;
       console.log("이동하려는 내용 : ",move);
       console.log(parameters.get("q"));
       console.log(parameters.get("sort"));

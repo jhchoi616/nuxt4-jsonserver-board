@@ -8,19 +8,19 @@ export default function PostList(props) {
   const [boards, setBoards] = useState();
   const [notices, setNotices] = useState();
   const [loading, setLoading] = useState(false);
-  console.log(params.get("page"));
-  console.log("초기 파라미터 : ",params.get("sort"));
+  // console.log(params.get("page"));
+  // console.log("초기 파라미터 : ",params.get("sort"));
   useEffect(()=>{
     const loadData = async () => {
-      console.log("주소 확인 : ", window.location.origin);
-      console.log("지금 유즈이펙 돌아유");
-      console.log(params.get("sort"));
+      // console.log("주소 확인 : ", window.location.origin);
+      // console.log("지금 유즈이펙 돌아유");
+      // console.log(params.get("sort"));
       try{
         let defaultPage = params.get("page")|| 1;
         const q = decodeURIComponent(params.get("q") || "");
         const type = params.get("type") || "all";
         const result = await fetchBoard(defaultPage,q,params.get("sort"),type);
-        console.log(result);
+        // console.log(result);
 
         if(result?.notices){
           setNotices(result.notices);
@@ -38,12 +38,12 @@ export default function PostList(props) {
     };
     loadData();
   },[params])
-  console.log(boards);
-  console.log(notices);
+  // console.log(boards);
+  // console.log(notices);
   console.log(loading);
-  console.log(boards?.PageCount > params.get("page"));
-  console.log( params.get("page") > 1 );
-  console.log(params.get("page"));
+  // console.log(boards?.PageCount > params.get("page"));
+  // console.log( params.get("page") > 1 );
+  // console.log(params.get("page"));
   function prevPage(){
     let page = parseInt(params.get("page")) || 1;
     let sort = params.get("sort") || "createdAt";
@@ -85,7 +85,10 @@ export default function PostList(props) {
     let type = "notice";
     setParams({page,q,sort,type});
   }
-  console.log(decodeURIComponent(params.get("q")))
+  function notFunc(){
+
+  }
+  // console.log(decodeURIComponent(params.get("q")))
   return (
     <>
       <section className="page-intro" aria-labelledby="board-title">
@@ -280,7 +283,7 @@ return (
       </section>
 
       <div className="pager" aria-label="페이지 이동 UI">
-        <span className={loading && boards && boards.pageCount >= parseInt(params.get("page")) && parseInt(params.get("page")) > 1 ? "is-static":"is-disabled"} onClick={prevPage} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
+        <span className={loading && boards && boards.pageCount >= parseInt(params.get("page")) && parseInt(params.get("page")) > 1 ? "is-static":"is-disabled"} onClick={loading && boards && boards.pageCount >= parseInt(params.get("page")) && parseInt(params.get("page")) > 1 ? prevPage : notFunc} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
         {loading&& boards && boards.pageCount>1 && Array.from({"length":boards.pageCount},(_,idx)=>{
           if(params==idx){
             console.log("params가 idx랑 같은 시점을 언제 만들었지; : ",params);
@@ -288,7 +291,7 @@ return (
           }
           else return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})}  aria-current={ parseInt(params.get("page")) == idx+1 ?"page":""}>{idx+1}</span>)
         })}
-        <span className={boards?.pageCount>parseInt(params.get("page"))?"is-static":"is-disabled"} onClick={nextPage} aria-label="다음 페이지"><i className="pi pi-chevron-right" aria-hidden="true" /></span>
+        <span className={boards?.pageCount>parseInt(params.get("page"))?"is-static":"is-disabled"} onClick={boards?.pageCount>parseInt(params.get("page"))?nextPage:notFunc} aria-label="다음 페이지"><i className="pi pi-chevron-right" aria-hidden="true" /></span>
       </div>
     </>
   )

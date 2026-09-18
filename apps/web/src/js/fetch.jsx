@@ -11,7 +11,7 @@ export async function fetchPost(query = ''){
 
 // 조회수 증가
 export async function fetchIncrease(query='', viewCount = 0){
-  console.log("넘어온 viewCount : ",viewCount);
+  // console.log("넘어온 viewCount : ",viewCount);
   viewCount=parseInt(viewCount);
   const res = await fetch(`${origin}/posts/${query}`,{
     method:"PATCH",
@@ -28,7 +28,7 @@ export async function fetchComment(query = ''){
 
 // 게시글 리스트 조회 (공지 + 일반, 검색/페이지네이션 포함)
 export async function fetchBoard(page = 1, q = '', sort = 'createdAt',type="all"){
-  console.log("넘어온 페이지 : ",page);
+  // console.log("넘어온 페이지 : ",page);
   try{
     if(parseInt(page)<1){
       return {
@@ -38,7 +38,7 @@ export async function fetchBoard(page = 1, q = '', sort = 'createdAt',type="all"
     }
     }
   }catch(e){
-    console.log("여기서 안 잡힘? : ",e);
+    // console.log("여기서 안 잡힘? : ",e);
     return {
       notices:[],
       boards:[],
@@ -48,14 +48,14 @@ export async function fetchBoard(page = 1, q = '', sort = 'createdAt',type="all"
   const activePage = parseInt(page) || 1;
   const limit = 6; // 한 페이지에 보여줄 개수
   const sorts = "-" + (sort || "createdAt");
-console.log(origin);
+// console.log(origin);
   // json-server(1.0.0-beta.3)는 한글 값 필터(q, _ne, :contains 등)를 전부 무시하고
   // 무조건 전체 목록을 반환하는 버그가 있음. 타입 제외/검색은 서버 대신 JS에서 처리.
   // 공지/일반 둘 다 같은 전체 목록이 필요하므로 요청은 한 번만 보낸다.
   const res = await fetch(`${origin}/posts?_sort=${sorts}&_embed=comments`);
-  console.log(res);
+  // console.log(res);
   const all = await res.json();
-  console.log(all);
+  // console.log(all);
   const matches = post => !q || post.title.includes(q) || post.content.includes(q);
   if(type=="all"){
 
@@ -135,31 +135,31 @@ return msg;
 
 // 게시글 삭제
 export async function fetchDeletePost(query="", comments = []){
-  console.log("삭제 하러 넘어옴");
-  console.log(query);
+  // console.log("삭제 하러 넘어옴");
+  // console.log(query);
   let msg;
   try{
     comments.map(async (el)=>{
-      console.log("댓글 우선 삭제");
-    console.log(el);
+      // console.log("댓글 우선 삭제");
+    // console.log(el);
     const res = await fetch(`${origin}/comments/${el.id}`,{
       method:"DELETE",
       headers:{"Content-Type":"application/json"},
     });
-    console.log("댓글 삭제 결과 : ",res);
-    console.log("댓글 삭제 결과2 : ",await res.json());
+    // console.log("댓글 삭제 결과 : ",res);
+    // console.log("댓글 삭제 결과2 : ",await res.json());
   })
   const res = await fetch(`${origin}/posts/${query}`,{
     method:"DELETE",
     headers:{"Content-Type":"application/json"},
   })
-  console.log("게시글 삭제 : ",res);
-  console.log("게시글 삭제 : ",await res.json());
+  // console.log("게시글 삭제 : ",res);
+  // console.log("게시글 삭제 : ",await res.json());
   msg="success";
 }catch(e){
 msg=e;
 }
-console.log(msg);
+// console.log(msg);
 return msg;
 
 }

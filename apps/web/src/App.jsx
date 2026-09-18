@@ -21,7 +21,7 @@ export default function App() {
       <AppHeader />
       <main id="main" tabIndex="-1" className="shell page">
       <Routes>
-        <Route path='/' element={<PostList/>}  />
+        <Route path='/' element={<PostList/>}  errorElement={<NotFound />} />
         <Route path='/posts/:id' element={<PostDetail/>} />
         <Route path='/posts/:id/edit' element={<PostForm/>} />
         <Route path='/write' element={<PostForm/>} />
