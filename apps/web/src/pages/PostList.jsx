@@ -5,8 +5,8 @@ import { fetchBoard } from "../js/fetch";
 
 export default function PostList(props) {
   const [params,setParams] = useSearchParams({page:1,"sort":"createdAt"});
-  const [boards, setBoards] = useState();
-  const [notices, setNotices] = useState();
+  const [boards, setBoards] = useState(null);
+  const [notices, setNotices] = useState(null);
   const [loading, setLoading] = useState(false);
   // console.log(params.get("page"));
   // console.log("초기 파라미터 : ",params.get("sort"));
