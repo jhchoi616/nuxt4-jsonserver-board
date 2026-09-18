@@ -4,7 +4,7 @@
       "id": "1",
       "title": "공지사항입니다",
       "type": "공지",
-      "content": "다음 항목은 의도적으로 제공하지 않습니다.\n화면 간 링크, React Router, History API 처리\nAPI client와 모든 비동기 요청\nuseState, useEffect, useMemo를 포함한 화면 상태 관리\n클릭·제출·변경 이벤트 핸들러\n검색, 필터, 정렬, 페이지네이션 동작\n게시글과 댓글의 작성, 조회, 수정, 삭제\nvalidation, 글자 수 계산, 제출 버튼 활성화\nloading, empty, error, success 상태 판별과 재시도\n삭제·이탈 확인 Dialog의 열기, 닫기, focus 관리\nURL path·parameter·query와 화면 상태 동기화\n수정 검사",
+      "content": "다음 항목은 의도적으로 제공하지 않습니다.\n화면 간 링크, React Router, History API 처리\nAPI client와 모든 비동기 요청\nuseState, useEffect, useMemo를 포함한 화면 상태 관리\n클릭·제출·변경 이벤트 핸들러\n검색, 필터, 정렬, 페이지네이션 동작\n게시글과 댓글의 작성, 조회, 수정, 삭제\nvalidation, 글자 수 계산, 제출 버튼 활성화\nloading, empty, error, success 상태 판별과 재시도\n삭제·이탈 확인 Dialog의 열기, 닫기, focus 관리\nURL path·parameter·query와 화면 상태 동기화\n\n추가 기능 : 페이지에 문자열을 넣는 경우 parseInt()로 try catch 문을 통해 exception 처리 하려고 했으나 js단에서 parseInt()가 문자열에서 숫자가 섞인 경우 문자열을 ignore하고 숫자를 숫자 처리함 => 이에 따라 파생하여 문자열의 경우 문자열이 배제된 인식된 숫자로 페이지를 구성 + 문자열만으로 페이지를 입력한 경우 디폴트 값인 1 페이지로 인식하는 기능",
       "viewCount": 149,
       "writer": {
         "nickName": "운영자",
@@ -402,19 +402,6 @@
       "type": "일반",
       "createdAt": "2026-09-16T06:30:46.204Z",
       "localDate": "2026-09-16 15:30:46"
-    },
-    {
-      "id": "6100",
-      "writer": {
-        "nickName": "작성자5",
-        "firstName": "작"
-      },
-      "content": "r23r",
-      "postId": "1",
-      "viewCount": 0,
-      "type": "일반",
-      "createdAt": "2026-09-16T07:17:57.497Z",
-      "localDate": "2026-09-16 16:17:57"
     },
     {
       "id": "d915",

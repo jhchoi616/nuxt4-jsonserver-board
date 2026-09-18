@@ -45,14 +45,14 @@ export default function PostList(props) {
   console.log( params.get("page") > 1 );
   console.log(params.get("page"));
   function prevPage(){
-    let page = params.get("page") || 1;
+    let page = parseInt(params.get("page")) || 1;
     let sort = params.get("sort") || "createdAt";
     const type = params.get("type") || "all";
     let q = encodeURIComponent(params.get("q")) || "";
     setParams({page:page-1,sort,q,type});
   }
   function nextPage(){
-    let page = params.get("page") || 1;
+    let page = parseInt(params.get("page")) || 1;
     let sort = params.get("sort") || "createdAt";
     let q = params.get("q") || "";
     const type = params.get("type") || "all";
@@ -65,7 +65,7 @@ export default function PostList(props) {
     setParams({page:idx.idx+1,q,sort,type});
   }
   function handleSort(){
-    let page = params.get("page") || 1;
+    let page = parseInt(params.get("page")) || 1;
     let q = params.get("q") || "";
     const type = params.get("type") || "all";
     setParams({page,q,sort:event.target.value,type});
@@ -280,13 +280,15 @@ return (
       </section>
 
       <div className="pager" aria-label="페이지 이동 UI">
-        <span className={loading && boards && boards.pageCount >= params.get("page") && params.get("page") > 1 ? "is-static":"is-disabled"} onClick={prevPage} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
+        <span className={loading && boards && boards.pageCount >= parseInt(params.get("page")) && parseInt(params.get("page")) > 1 ? "is-static":"is-disabled"} onClick={prevPage} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
         {loading&& boards && boards.pageCount>1 && Array.from({"length":boards.pageCount},(_,idx)=>{
-          if(params==idx)
-          return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})} aria-current="page">{idx+1}</span>)
-          else return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})} >{idx+1}</span>)
+          if(params==idx){
+            console.log("params가 idx랑 같은 시점을 언제 만들었지; : ",params);
+            return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})}>{idx+1}</span>)
+          }
+          else return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})}  aria-current={ parseInt(params.get("page")) == idx+1 ?"page":""}>{idx+1}</span>)
         })}
-        <span className={boards?.pageCount>params.get("page")?"is-static":"is-disabled"} onClick={nextPage} aria-label="다음 페이지"><i className="pi pi-chevron-right" aria-hidden="true" /></span>
+        <span className={boards?.pageCount>parseInt(params.get("page"))?"is-static":"is-disabled"} onClick={nextPage} aria-label="다음 페이지"><i className="pi pi-chevron-right" aria-hidden="true" /></span>
       </div>
     </>
   )
