@@ -16,7 +16,7 @@ export async function fetchIncrease(query='', viewCount = 0){
   const res = await fetch(`${origin}/posts/${query}`,{
     method:"PATCH",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({"viewCount":viewCount+1})}).then(response => response.json()).then(data => console.log('PATCH 수정 완료:', data)).catch(e=>console.error(e));
+    body:JSON.stringify({"viewCount":viewCount+1})}).then(response => response.json()).then(data => data).catch(e=>console.error(e));
 }
 
 // 댓글 조회

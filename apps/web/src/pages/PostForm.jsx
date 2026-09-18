@@ -53,7 +53,7 @@ export default function PostForm(props) {
     if(id){
       const loadData = async () => {
         const res = await fetchPost(id);
-        console.log("수정 하러 옴 : ",res);
+        // console.log("수정 하러 옴 : ",res);
         if(res.title)setFormTitle(res.title);
         if(res.content)setFormContent(res.content);
         if(res.writer.nickName)setFormNickName(res.writer.nickName);
@@ -63,7 +63,7 @@ export default function PostForm(props) {
       let data = localStorage.getItem("board");
       
       if(data){
-        console.log("??");
+        // console.log("??");
         data = JSON.parse(data);
         setFormTitle(data.formTitle);
         setFormContent(data.formContent);
@@ -74,11 +74,11 @@ export default function PostForm(props) {
 
 
   useEffect(() => {
-    console.log(blocker)
-    console.log(blocker.state);
-    console.log(dialog);
+    // console.log(blocker)
+    // console.log(blocker.state);
+    // console.log(dialog);
     if (blocker.state == "blocked") {
-      console.log("?")
+      // console.log("?")
       setDialog(true);
       return;
     }
@@ -90,7 +90,7 @@ export default function PostForm(props) {
   }, [blocker.state]);
 
 function handlePage(){
-  console.log("아이디 확인 : ",id);
+  // console.log("아이디 확인 : ",id);
   setDialog(false);
   if(!id)
     localStorage.setItem("board",JSON.stringify({formTitle,formNickName,formContent}));
@@ -99,10 +99,10 @@ function handlePage(){
     setWhen(false);
     setTimeout(() => {
       const move = blocker.location.pathname + `?page=${parseInt(parameters.get("page"))||1}&sort=${parameters.get("sort")||"createdAt"}&q=${parameters.get("q")||""}`;
-      console.log("이동하려는 내용 : ",move);
-      console.log(parameters.get("q"));
-      console.log(parameters.get("sort"));
-      console.log(parameters.get("page"));
+      // console.log("이동하려는 내용 : ",move);
+      // console.log(parameters.get("q"));
+      // console.log(parameters.get("sort"));
+      // console.log(parameters.get("page"));
       navigate(move);
       
     }, 1);
@@ -127,7 +127,7 @@ function handlePage(){
       nickName.current.focus();
       return;
     }
-    console.log("본문 엔터값 ? : ",content.current.value);
+    // console.log("본문 엔터값 ? : ",content.current.value);
     if(content.current.value.trim()?.length<1){
       content.current.value = content.current.value.trim();
       alert("본문 내용을 작성해주세요");

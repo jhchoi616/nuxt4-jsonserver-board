@@ -26,12 +26,12 @@ export default function PostList(props) {
           setNotices(result.notices);
           setBoards(result);
         }else{
-          console.log("메시지 넘어옴?");
-          console.log(result);
+          // console.log("메시지 넘어옴?");
+          // console.log(result);
         }
       } catch(err){
-        console.log("list 호출 에러 ");
-        console.log(err);
+        // console.log("list 호출 에러 ");
+        // console.log(err);
       }finally{
         setLoading(true);
       }
@@ -40,7 +40,7 @@ export default function PostList(props) {
   },[params])
   // console.log(boards);
   // console.log(notices);
-  console.log(loading);
+  // console.log(loading);
   // console.log(boards?.PageCount > params.get("page"));
   // console.log( params.get("page") > 1 );
   // console.log(params.get("page"));
@@ -286,7 +286,7 @@ return (
         <span className={loading && boards && boards.pageCount >= parseInt(params.get("page")) && parseInt(params.get("page")) > 1 ? "is-static":"is-disabled"} onClick={loading && boards && boards.pageCount >= parseInt(params.get("page")) && parseInt(params.get("page")) > 1 ? prevPage : notFunc} aria-hidden="true"><i className="pi pi-chevron-left" /></span>
         {loading&& boards && boards.pageCount>1 && Array.from({"length":boards.pageCount},(_,idx)=>{
           if(params==idx){
-            console.log("params가 idx랑 같은 시점을 언제 만들었지; : ",params);
+            // console.log("params가 idx랑 같은 시점을 언제 만들었지; : ",params);
             return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})}>{idx+1}</span>)
           }
           else return (<span key={`page${idx+1}`} className="is-static" onClick={()=>handlePage({idx})}  aria-current={ parseInt(params.get("page")) == idx+1 ?"page":""}>{idx+1}</span>)
