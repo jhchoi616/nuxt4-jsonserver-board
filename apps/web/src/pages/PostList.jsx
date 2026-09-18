@@ -226,7 +226,7 @@ return (
 </div>
   </>
  )}
- {loading && notices && params.get("type")!="all" && notices?.length<1 && (
+ {loading && notices && params.get("type")!="all" && notices?.length<1 && !boards?.boards && (
     <>
   <div className="content-state" role="status">
   <span className="content-state-icon" aria-hidden="true"><i className="pi pi-info-circle"></i></span>
