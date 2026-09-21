@@ -22,10 +22,10 @@ export default function PostDetail(props) {
       await fetchIncrease(id,board.viewCount);
       board.viewCount=parseInt(board.viewCount)+1;
       setPost(board);
-      console.log(board);
+      // console.log(board);
       const comments = await fetchComment(id);
       setComments(comments);
-      console.log("넘어가는 post.viewCount : ",board.viewCount);
+      // console.log("넘어가는 post.viewCount : ",board.viewCount);
     }finally{
       setLoading(true);
     }
@@ -41,8 +41,8 @@ async function commentSubmit(){
   setCommentLoading(true);
   if(comment?.trim()?.length<1){
     alert("공백 댓글을 입력할 수 없습니다.");
-    console.log(commentRef);
-    console.log(commentRef.current);
+    // console.log(commentRef);
+    // console.log(commentRef.current);
     commentRef.current.focus();
     setCommentLoading(false);
     return;
@@ -65,9 +65,9 @@ async function commentSubmit(){
 }
 // 게시글 삭제
 const handleRemove = async() =>{
-  console.log("여기서 삭제 보냄 " );
+  // console.log("여기서 삭제 보냄 " );
   let msg = await fetchDeletePost(id,comments);
-  console.log(msg);
+  // console.log(msg);
   if(msg=="success"){
     alert("삭제가 완료되었습니다.");
     navigate("/");
